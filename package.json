@@ -1,0 +1,18 @@
+{
+  "name": "nasa-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "i-be": "npm i --prefix back-end",
+    "i-fe": "npm i --prefix front-end",
+    "be": "npm run --prefix back-end",
+    "fe": "npm run --prefix front-end",
+    "watch": "npm run be watch & npm run fe start",
+    "predeploy": "npm run fe build",
+    "deploy": "pm2 start src/server.js -i 3 --prefix back-end"
+  },
+  "author": "",
+  "license": "ISC"
+}
