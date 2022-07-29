@@ -1,7 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 import { Arwes } from "arwes";
 
-import AppLayout from "./pages/AppLayout";
+import AppLayout from "./general/components/AppLayout";
 
 import { resources } from "./settings";
 

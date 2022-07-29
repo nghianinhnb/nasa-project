@@ -9,6 +9,8 @@ import Footer from "general/components/Footer/index.js";
 import Launch from "pages/Launch";
 import History from "pages/History";
 import Upcoming from "pages/Upcoming";
+import Login from "pages/Login";
+import SignUp from "pages/SignUp";
 
 import style from "./style";
 
@@ -47,6 +49,10 @@ function AppLayout(props) {
               <Route exact path="/upcoming" component={ () => <Upcoming sounds={sounds} entered={anim.entered}/> }/>
 
               <Route exact path="/history" component={ () => <History sounds={sounds} entered={anim.entered}/> }/>
+
+              <Route exact path="/login" component={ () => <Login sounds={sounds} entered={anim.entered}/> }/>
+
+              <Route exact path="/sign-up" component={ () => <SignUp sounds={sounds} entered={anim.entered}/> }/>
 
             </Switch>
             </div>
