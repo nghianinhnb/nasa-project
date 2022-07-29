@@ -21,16 +21,10 @@ function Header(props) {
     <ArwesHeader animate>
       <Centered className={classes.root} {...rest}>
         {/* LOGO  */}
-        <img src="/favicon.png" alt="" className={classes.img} style={{
-          margin: "15px 10px 15px 0",
-          height: "50px",
-          width: "auto",
-        }} />
-
         <Logo animate size={50} className={classes.logo} layer="header" />
 
         <Words animate className={classes.banner}>
-          NASA Mission Control
+          MISSION CONTROL
         </Words>
         {/* END LOGO  */}
 
@@ -55,6 +49,13 @@ function Header(props) {
             <Highlight className={classes.button} animate layer="header">
               <Link className={classes.link} to="/history">
               <i className="material-icons">history</i>History</Link>
+            </Highlight>
+          </Clickable>
+
+          <Clickable className={classes.clickable} onClick={onNav}>
+            <Highlight className={classes.button} animate layer="header">
+              <Link className={classes.link} to="/login">
+              <i className="material-icons">login</i>Login</Link>
             </Highlight>
           </Clickable>
         </nav>
