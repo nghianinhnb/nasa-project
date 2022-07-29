@@ -22,10 +22,10 @@ axiosClient.interceptors.request.use(async (config) => {
       }`
     );
     console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
-    const accessToken = Global.accessToken;
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
+    // const accessToken = Global.accessToken;
+    // if (accessToken) {
+    //   config.headers.Authorization = `Bearer ${accessToken}`;
+    // }
     return config;
 });
 
