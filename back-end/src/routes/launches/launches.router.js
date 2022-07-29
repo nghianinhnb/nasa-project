@@ -6,7 +6,7 @@ module.exports = (app) => {
 
     router.get('/', launchesController.getAll);
     router.post('/', launchesController.create);
-    router.delete('/', launchesController.delete)
+    router.put('/', launchesController.abort)
 
     app.use('/launches', router);
 }

@@ -3,7 +3,12 @@ const err_vi = require("../../config/err.vi");
 
 
 exports.getAll = async (req, res) => {
-    res.json(await launch.find({}, '-__v'));
+    const launches = await launch.find({}, '-__v');
+
+    res.json({
+        result: 'success',
+        launches: launches
+    });
 }
 
 
@@ -15,9 +20,24 @@ exports.get = async (req, res) => {
             result: 'failed',
             reason: err_vi.ERROR_MISSING_PARAMETERS,
         })
+        return;
     }
 
-    res.json( await launch.findOne({id: launchId}, '-__v') );
+    const launch = await launch.findOne({id: launchId}, '-__v')
+
+    if (launch) {
+        res.json({
+            result: 'success',
+            launch: launch,
+        });
+        return;
+    } else {
+        res.status(404).json({
+            result: 'failed',
+            reason: err_vi.ERROR_NOT_FOUND
+        });
+    }
+
 }
 
 
@@ -31,19 +51,19 @@ exports.create = async (req, res) => {
         customers: ['ZTM', 'VN'],
     };
 
-    const result = await launch.create(newLaunch);
+    const detail = await launch.create(newLaunch);
 
     res.status(201).json({
         result: 'success',
-        detail: result,
+        detail: detail,
     })
 }
 
 
-exports.delete = async (req, res) => {
-    const id = req.body.id;
-    
-    const result = await launch.updateOne({id : id}, {upcoming: false, success: false});
+exports.abort = async (req, res) => {
+    const _id = req.body._id;
+
+    const result = await launch.updateOne({_id : _id}, {upcoming: false, success: false});
 
     res.json({
         result: 'success',
