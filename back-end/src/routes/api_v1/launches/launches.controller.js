@@ -1,5 +1,5 @@
-const {launch} = require('../../models');
-const err_vi = require("../../config/err.vi");
+const {launch} = require('../../../models');
+const err_vi = require("../../../config/err.vi");
 
 
 exports.getAll = async (req, res) => {

@@ -1,4 +1,4 @@
-const {planet} = require('../../models');
+const {planet} = require('../../../models');
 
 
 exports.getAll = async (req, res) => {

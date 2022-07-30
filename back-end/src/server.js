@@ -15,6 +15,7 @@ const MONGO_URL = process.env.MONGO_URL;
 
 const app = express();
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 // write log to file;
@@ -32,13 +33,13 @@ app.use(morgan(
 app.use(express.json());
 
 
-require('./routes/planets/planets.router')(app);
-require('./routes/launches/launches.router')(app);
+require('./routes/api_v1')(app);
 
 
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 
 (async function () {
     mongoose.connection.once('open', () => {
