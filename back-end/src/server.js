@@ -6,18 +6,17 @@ const rfs = require('rotating-file-stream');
 const path = require('path');
 const mongoose = require('mongoose');
 
-const {loadPlanetsCsv} = require('./services/loadPlanet')
+const {loadPlanetsCsv} = require('./services/loadPlanet');
 
 
 const PORT = process.env.PORT || 8000;
-const MONGO_URL = process.env.MONGO_URL;
 
 
 const app = express();
 
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 // write log to file;
 app.use(morgan(
     ':remote-addr - [:date] ":method :url" :status :res[content-length] :total-time[0] ms ":user-agent"',
@@ -33,9 +32,11 @@ app.use(morgan(
 app.use(express.json());
 
 
+require('./middlewares/auth')(app);
 require('./routes/api_v1')(app);
 
 
+// serve front-end web app
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -48,9 +49,10 @@ app.get('/*', (req, res) => {
     mongoose.connection.on('error', (err) => {
         console.log(err);
     })
-    await mongoose.connect(MONGO_URL);
 
-    await loadPlanetsCsv();
+    await mongoose.connect(process.env.MONGO_URL);
+
+    // await loadPlanetsCsv();
 
     app.listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`);

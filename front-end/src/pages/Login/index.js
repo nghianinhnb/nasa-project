@@ -32,6 +32,7 @@ function Login(props) {
                 </Clickable>
             </div>
 
+            <a href={`${process.env.REACT_APP_BASE_URL}/auth/google`} style={{color: '#26dafd'}}>Login with Google</a>
         </form>
     </Appear>
   )
