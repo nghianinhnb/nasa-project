@@ -1,11 +1,11 @@
 require('dotenv').config();
-const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
-const rfs = require('rotating-file-stream');
 const path = require('path');
+const morgan = require('morgan');
+const express = require('express');
 const mongoose = require('mongoose');
-
+const rfs = require('rotating-file-stream');
+const cookieSession = require('cookie-session');
 const {loadPlanetsCsv} = require('./services/loadPlanet');
 
 
@@ -29,6 +29,11 @@ app.use(morgan(
         }) 
     }
 ));
+app.use(cookieSession({
+    name: 'session',
+    maxAge: 60 * 1000,
+    keys: [ process.env.COOKIE_KEY ]
+}))
 app.use(express.json());
 
 
@@ -36,12 +41,13 @@ require('./middlewares/auth')(app);
 require('./routes/api_v1')(app);
 
 
-// serve front-end web app
+// MARK: --- Serve Front-End Web App ---
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 
+// MARK: --- Start Server ---
 (async function () {
     mongoose.connection.once('open', () => {
         console.log('Connect to MongoDB successfully!')
