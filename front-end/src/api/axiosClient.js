@@ -1,10 +1,12 @@
 import axios from "axios";
+import Global from 'general/Global';
 import queryString from "query-string";
 
 
 const sTag = "[AxiosClient]";
 
 const axiosClient = axios.create({
+    withCredentials: true,
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
       "content-type": "application/json",
@@ -21,11 +23,13 @@ axiosClient.interceptors.request.use(async (config) => {
           : JSON.stringify(config.params)
       }`
     );
-    console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
+    // console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
+
     // const accessToken = Global.accessToken;
     // if (accessToken) {
     //   config.headers.Authorization = `Bearer ${accessToken}`;
     // }
+
     return config;
 });
 
@@ -41,15 +45,15 @@ axiosClient.interceptors.response.use(
     async (error) => {
       console.log({ error });
 
-    //   let errorMessage = null;
-    //   const response = error.response;
-    //   if (response && response.data) {
-    //     const data = response.data;
-    //     const { result, reason } = data;
-    //     if (result === "failed" && reason) {
-    //       errorMessage = reason;
-    //     }
-    //   }
+      // let errorMessage = null;
+      // const response = error.response;
+      // if (response && response.data) {
+      //   const data = response.data;
+      //   const { result, reason } = data;
+      //   if (result === "failed" && reason) {
+      //     errorMessage = reason;
+      //   }
+      // }
 
       return error;
     }
