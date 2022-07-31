@@ -8,8 +8,6 @@ exports.strategy = new Strategy({
     callbackURL: constants.PATH_GOOGLE_AUTH_CALLBACK,
   },
   function(accessToken, refreshToken, profile, callback) {
-    console.log({profile});
-
     return callback(null, profile);
   }
 );
@@ -31,7 +29,7 @@ exports.router = (() => {
     passport.authenticate('google', {
       successRedirect: '/',
       failureRedirect: '/login',
-      session: false,
+      session: true,
     }),
     (req, res) => {
     }
