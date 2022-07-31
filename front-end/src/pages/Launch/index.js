@@ -57,7 +57,7 @@ function Launch(props) {
 
   // MARK: --- Hooks ---
   useEffect(() => {
-    dispatch( thunkGetAllPlanets({}) );
+    if (!planets.length) dispatch( thunkGetAllPlanets({}) );
   }, []);
 
 

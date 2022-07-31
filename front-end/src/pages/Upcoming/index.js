@@ -19,7 +19,7 @@ function Upcoming(props) {
 
   // MARK: --- Hooks ---
   useEffect(() => {
-    dispatch( thunkGetLaunchs({}) );
+    if (!launches.length) dispatch( thunkGetLaunchs({}) );
   }, []);
 
 

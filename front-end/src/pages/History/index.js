@@ -1,12 +1,23 @@
-import { useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { Appear, Table, Paragraph } from "arwes";
 
 import InfoTable from "general/components/InfoTable";
 
+import {thunkGetLaunchs} from 'pages/Upcoming/launchSlice';
+
 
 function History(props) {
   // MARK: --- Params ---
+  const dispatch = useDispatch();
   const launches = useSelector(state => state.launch.launches);
+
+
+  // MARK: --- Hooks ---
+  useEffect(() => {
+    if (!launches.length) dispatch( thunkGetLaunchs({}) );
+  }, []);
+
 
   return (
     <article id="history">

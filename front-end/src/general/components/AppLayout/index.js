@@ -1,4 +1,4 @@
-import { useState, } from "react";
+import { useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Frame, withSounds, withStyles } from "arwes";
 
@@ -22,7 +22,7 @@ function AppLayout(props) {
 
 
   // MARK: --- Functions ---
-  const animateFrame = () => {
+  function animateFrame() {
     setFrameVisible(false);
     setTimeout(() => {
       setFrameVisible(true);
