@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const express = require('express');
 const mongoose = require('mongoose');
 const rfs = require('rotating-file-stream');
-const cookieSession = require('cookie-session');
 const {loadPlanetsCsv} = require('./services/loadPlanet');
 
 
@@ -15,28 +14,23 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 
+// MARK: --- Common Middlewares ---
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
-// write log to file;
 app.use(morgan(
     ':remote-addr - [:date] ":method :url" :status :res[content-length] :total-time[0] ms ":user-agent"',
     { 
         stream: rfs.createStream("access.log", {
             size: "10M", // rotate every 10 MegaBytes written
             interval: "1d", // rotate daily
-            compress: "gzip", // compress rotated files
             path: path.join(__dirname, '..', 'log'),
         }) 
     }
 ));
-app.use(cookieSession({
-    name: 'session',
-    maxAge: 60 * 1000,
-    keys: [ process.env.COOKIE_KEY ]
-}))
 app.use(express.json());
 
 
+// MARK: --- Custom Middleware and Route ---
 require('./middlewares/auth')(app);
 require('./routes/api_v1')(app);
 

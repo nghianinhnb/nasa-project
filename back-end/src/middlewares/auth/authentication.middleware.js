@@ -9,18 +9,7 @@ needAuthenticatedPath[PATH_LAUNCH]=true;
 
 
 module.exports = (req, res, next) => {
-    if (req.path in needAuthenticatedPath) {
-        const isLoggedIn = req.isAuthenticated() && req.user;
-
-        if (!isLoggedIn) {
-            res.status(401).json({
-                result: 'failed',
-                reason: err_vi.ERROR_UNAUTHORIZED,
-            });
-            return;
-        }
-    }
-
+    
 
     next();
 };

@@ -19,7 +19,7 @@ exports.router = (() => {
   router.get(
     constants.PATH_GOOGLE_AUTH,
     passport.authenticate('google', {
-      scope: ['email'],
+      scope: ['email', 'profile'],
     }),
     (req, res) => {},
   );
@@ -29,7 +29,7 @@ exports.router = (() => {
     passport.authenticate('google', {
       successRedirect: '/',
       failureRedirect: '/login',
-      session: true,
+      session: false,
     }),
     (req, res) => {
     }
