@@ -4,7 +4,7 @@ import { Appear, Button, Loading, Paragraph } from "arwes";
 import Clickable from "../../general/components/Clickable";
 
 import {thunkGetAllPlanets} from 'pages/Launch/planetSlice';
-import {updateCreatePending, addLaunch, abortLaunch} from 'pages/Upcoming/launchSlice';
+import {updateCreatePending, addLaunch} from 'pages/Upcoming/launchSlice';
 
 import launchApi from "api/launchApi";
 
@@ -40,7 +40,7 @@ function Launch(props) {
 
     const res = await launchApi.createLaunch({launchDate, mission, rocket, target});
     const {result, detail} = res.data;
-    if (result=='success') {
+    if (result==='success') {
       setTimeout(() => {
         sounds.success.play()
         dispatch(updateCreatePending(false));
@@ -58,7 +58,7 @@ function Launch(props) {
   // MARK: --- Hooks ---
   useEffect(() => {
     if (!planets.length) dispatch( thunkGetAllPlanets({}) );
-  }, []);
+  });
 
 
   return (

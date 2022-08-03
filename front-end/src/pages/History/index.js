@@ -16,7 +16,7 @@ function History(props) {
   // MARK: --- Hooks ---
   useEffect(() => {
     if (!launches.length) dispatch( thunkGetLaunchs({}) );
-  }, []);
+  });
 
 
   return (

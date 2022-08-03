@@ -22,7 +22,7 @@ const planetSlice = createSlice({
     extraReducers: {
         [thunkGetAllPlanets.fulfilled]: (state, action) => {
             const {result, planets} = action.payload.data;
-            if (result=='success') {
+            if (result==='success') {
                 state.planets = planets;
             }
         }
@@ -33,5 +33,5 @@ const planetSlice = createSlice({
 const {reducer, actions} = planetSlice;
 
 
-export const {} = actions;
+// export const {} = actions;
 export default reducer;

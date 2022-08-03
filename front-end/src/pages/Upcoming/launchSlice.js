@@ -43,8 +43,8 @@ const launchSlice = createSlice({
             state.launches.push(action.payload);
         },
         abortLaunch: (state, action) => {
-            state.launches.map(item => {
-                if (item._id = action.payload) {
+            state.launches.forEach(item => {
+                if (item._id === action.payload) {
                     item['upcoming'] = false;
                     item['success'] = false;
                 }
@@ -55,7 +55,7 @@ const launchSlice = createSlice({
         // Get all Launch
         [thunkGetLaunchs.fulfilled]: (state, action) => {
             const {result, launches} = action.payload.data;
-            if (result=='success' && launches.length) {
+            if (result==='success' && launches.length) {
                 state.launches = launches;
             }
         },
