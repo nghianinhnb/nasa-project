@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "i-be": "npm i --prefix back-end",
     "i-fe": "npm i --prefix front-end",
+    "install": "cd ./back-end && npm i && cd ../front-end && npm i && cd ..",
     "be": "npm run --prefix back-end",
     "fe": "npm run --prefix front-end",
     "watch": "npm run be watch & npm run fe start",
