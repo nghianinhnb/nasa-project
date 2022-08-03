@@ -6,7 +6,6 @@ import queryString from "query-string";
 const sTag = "[AxiosClient]";
 
 const axiosClient = axios.create({
-    withCredentials: true,
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
       "content-type": "application/json",
@@ -23,12 +22,12 @@ axiosClient.interceptors.request.use(async (config) => {
           : JSON.stringify(config.params)
       }`
     );
-    // console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
+    console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
 
-    // const accessToken = Global.accessToken;
-    // if (accessToken) {
-    //   config.headers.Authorization = `Bearer ${accessToken}`;
-    // }
+    const accessToken = Global.accessToken;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
 
     return config;
 });
