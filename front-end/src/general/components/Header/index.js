@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import Clickable from "../Clickable";
 import Centered from "../Centered";
 
+import UserHelper from "general/helpers/UserHelper";
+
 import style from "./style";
 
 
@@ -52,12 +54,29 @@ function Header(props) {
             </Highlight>
           </Clickable>
 
-          <Clickable className={classes.clickable} onClick={onNav}>
-            <Highlight className={classes.button} animate layer="header">
-              <Link className={classes.link} to="/login">
-              <i className="material-icons">login</i>Login</Link>
-            </Highlight>
-          </Clickable>
+          {
+            UserHelper.isAuthentication()
+            ?
+              <Clickable className={classes.clickable}
+                onClick={() => {
+                  UserHelper.signOut();
+                  onNav();
+                }}
+              >
+                <Highlight className={classes.button} animate layer="header">
+                  <Link className={classes.link} to="/login">
+                  <i className="material-icons">logout</i>Logout</Link>
+                </Highlight>
+              </Clickable>
+            :
+              <Clickable className={classes.clickable} onClick={onNav}>
+                <Highlight className={classes.button} animate layer="header">
+                  <Link className={classes.link} to="/login">
+                  <i className="material-icons">login</i>Login</Link>
+                </Highlight>
+              </Clickable>
+          }
+
         </nav>
         {/* END NAV BAR  */}
       </Centered>
