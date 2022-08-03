@@ -6,11 +6,15 @@ import Centered from "general/components/Centered";
 import Header from "general/components/Header";
 import Footer from "general/components/Footer/index.js";
 
+import GuestRoute from "../Routes/GuestRoute";
+import PrivateRoute from "../Routes/PrivateRoute";
+
 import Launch from "pages/Launch";
 import History from "pages/History";
 import Upcoming from "pages/Upcoming";
 import Login from "pages/Login";
 import SignUp from "pages/SignUp";
+import NotFound from "../NotFound";
 
 import style from "./style";
 
@@ -44,15 +48,17 @@ function AppLayout(props) {
             <Switch>
               <Redirect exact from="/" to="/launch" />
 
-              <Route exact path="/launch" component={ () => <Launch sounds={sounds} entered={anim.entered}/> }/>
+              <GuestRoute exact path="/login" component={ () => <Login sounds={sounds} entered={anim.entered}/> }/>
 
-              <Route exact path="/upcoming" component={ () => <Upcoming sounds={sounds} entered={anim.entered}/> }/>
+              <GuestRoute exact path="/sign-up" component={ () => <SignUp sounds={sounds} entered={anim.entered}/> }/>
 
-              <Route exact path="/history" component={ () => <History sounds={sounds} entered={anim.entered}/> }/>
+              <PrivateRoute exact path="/launch" component={ () => <Launch sounds={sounds} entered={anim.entered}/> }/>
 
-              <Route exact path="/login" component={ () => <Login sounds={sounds} entered={anim.entered}/> }/>
+              <PrivateRoute exact path="/upcoming" component={ () => <Upcoming sounds={sounds} entered={anim.entered}/> }/>
 
-              <Route exact path="/sign-up" component={ () => <SignUp sounds={sounds} entered={anim.entered}/> }/>
+              <PrivateRoute exact path="/history" component={ () => <History sounds={sounds} entered={anim.entered}/> }/>
+
+              <Route component={ () => <NotFound sounds={sounds} entered={anim.entered}/> }/>
 
             </Switch>
             </div>
