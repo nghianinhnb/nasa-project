@@ -5,7 +5,6 @@ const Global = {
 
   refreshToken: localStorage.getItem('refreshToken'),
   accessToken: localStorage.getItem('accessToken'),
-  initialRefreshToken: "",
 };
 
 export default Global;
