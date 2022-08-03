@@ -37,7 +37,7 @@ require('./routes/api_v1')(app);
 
 // MARK: --- Serve Front-End Web App ---
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 

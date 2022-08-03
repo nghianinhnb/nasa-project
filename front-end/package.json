@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set BUILD_PATH=../back-end/src/public&& react-scripts build",
+    "build": "set BUILD_PATH=../back-end/src/build&& react-scripts build",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
