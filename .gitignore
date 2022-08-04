@@ -20,5 +20,6 @@ build
 .env.production.local
 
 # log
+log
 *.log*
 package-lock.json
