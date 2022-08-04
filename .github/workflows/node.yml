@@ -21,6 +21,6 @@ jobs:
           node-version: ${{ metric.node-version }}
       - uses: supercharge/mongodb-github-action@1.7.0
         with:
-          mongodb-version: ${{ metrix.mongodb.version }}
+          mongodb-version: ${{ metric.mongodb.version }}
       - run: npm install
       - run: npm run fe build
