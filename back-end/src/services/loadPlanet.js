@@ -18,7 +18,7 @@ async function loadPlanetsCsv() {
         }))
         .on('data', async (data) => {
             if (isHabitablePlanets(data)) {
-                planet.updateOne(
+                await planet.updateOne(
                     {name: data.kepler_name},
                     {name: data.kepler_name},
                     {upsert: true},
