@@ -30,8 +30,7 @@ const planetSlice = createSlice({
 })
 
 
-const {reducer, actions} = planetSlice;
-
+const {reducer} = planetSlice;
 
 // export const {} = actions;
 export default reducer;
