@@ -16,7 +16,8 @@ function History(props) {
   // MARK: --- Hooks ---
   useEffect(() => {
     if (!launches.length) dispatch( thunkGetLaunchs({}) );
-  });
+    // eslint-disable-next-line
+  }, []);
 
 
   return (
