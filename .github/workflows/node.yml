@@ -10,7 +10,7 @@ jobs:
       CI: true
       MONGO_URL: mongodb://localhost/nasa
     strategy:
-      metric:
+      matrix:
         node-version: ['16']
         mongodb-version: ['5.0']
     runs-on: ubuntu-latest
@@ -18,9 +18,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{ metric.node-version }}
+          node-version: ${{ matrix.node-version }}
       - uses: supercharge/mongodb-github-action@1.7.0
         with:
-          mongodb-version: ${{ metric.mongodb.version }}
+          mongodb-version: ${{ matrix.mongodb.version }}
       - run: npm install
       - run: npm run fe build
