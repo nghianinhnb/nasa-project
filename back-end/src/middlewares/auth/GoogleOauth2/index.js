@@ -1,8 +1,9 @@
-const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const {user} = require('../../../models')
+const {user} = require('../../../models');
+const err_vi = require('../../../config/err.vi');
 const Strategy = require('passport-google-oauth20');
-const constants = require('../../../config/constants')
+const constants = require('../../../config/constants');
+const authHelper = require('../../../utils/authHelpers');
 
 
 exports.strategy = new Strategy({
@@ -12,14 +13,19 @@ exports.strategy = new Strategy({
   },
   async function(accessToken, refreshToken, profile, callback) {
     const {name, emails} = profile
-    const id = await user.findOne({email: emails[0].value}, 'id');
 
-    if (!id) {
-      console.log('create')
-      id = await user.create({email: emails[0].value, name: `${name.familyName} ${name.givenName}`}, 'id')
+    try {
+      const id = await user.findOne({email: emails[0].value}, 'id');
+      
+      if (!id) {
+        id = await user.create({email: emails[0].value, name: `${name.familyName} ${name.givenName}`}, 'id');
+      }
+
+      return callback(null, id);
+
+    } catch(err) {
+      return callback(err, undefined);
     }
-
-    return callback(null, id);
   }
 );
 
@@ -42,13 +48,35 @@ exports.router = (() => {
       failureRedirect: '/login',
       session: false,
     }),
-    (req, res) => {
-      const accessToken = jwt.sign({ id: req.user.id , exp: Math.floor(Date.now() * 0.001) + 604800 }, process.env.ACCESS_TOKEN_KEY);
-      const refreshToken = jwt.sign({ id: req.user.Id , exp: Math.floor(Date.now() * 0.001) + 604800 }, process.env.ACCESS_TOKEN_KEY);
+    async (req, res) => {
+      const userId = req.user.id
 
-      const htmlWithEmbeddedJWT = `<script>localStorage.setItem('accessToken','${accessToken}');localStorage.setItem('refreshToken','${refreshToken}');location.href='/'</script>`;
+      if (!userId) {
+        res.status(400).json({
+          result: 'failed',
+          err: 'ERROR_MISSING_PARAMETERS',
+          reason: err_vi.ERROR_MISSING_PARAMETERS,
+        });
+        return;
+      }
+
+      try {
+        const accessToken = authHelper.generateAccessToken(userId);
+        const refreshToken = authHelper.generateRefreshToken();
   
-      res.send(htmlWithEmbeddedJWT);
+        await user.updateOne({id: userId}, {refreshToken: refreshToken})
+
+        const storingTokenScript = authHelper.storingTokenScript(accessToken, refreshToken);
+        res.send( storingTokenScript );
+        
+      } catch(err) {
+        res.status(500).json({
+          result: 'failed',
+          err: err,
+          reason: err.ERROR_INTERNAL,
+        })
+      }
+
     }
   );
 
