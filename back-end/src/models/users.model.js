@@ -8,13 +8,17 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
     },
-    passwordHash: {
+    hashedPassword: {
         type: String,
     },
     salt: {
         type: String,
-    }
+    },
+    refreshToken: {
+        type: String,
+    },
 })
 
 
