@@ -4,6 +4,7 @@ module.exports = (app) => {
 
     require('./planets/planets.router')(router);
     require('./launches/launches.router')(router);
+    require('./users/users.router')(router);
 
     app.use('/api/v1', router);
 }
