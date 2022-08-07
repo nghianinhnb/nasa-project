@@ -7,4 +7,3 @@ module.exports.ERROR_WRONG_PASSWORD     = 'Sai tên đăng nhập hoặc mật k
 module.exports.ERROR_INVALID_STATE      = 'Trạng thái không hợp lệ'
 module.exports.ERROR_NOT_VALID_PARAMETERS     = 'Tham số không hợp lệ'
 module.exports.ERROR_ACCOUNT_EXISTS     = 'Tài khoản đã tồn tại'
-module.exports.ERROR_WRONG_PASSWORD     = 'Nhập sai mật khẩu'
