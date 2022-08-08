@@ -15,11 +15,11 @@ function Upcoming(props) {
 
   // MARK: --- Params ---
   const { entered, classes } = props;
-  const launches = useSelector(state => state.launch.launches);
+  const {launches, pending} = useSelector(state => state.launch);
 
   // MARK: --- Hooks ---
   useEffect(() => {
-    if (!launches.length) dispatch( thunkGetLaunchs({}) );
+    if (!launches.length && !pending) dispatch( thunkGetLaunchs({}) );
     // eslint-disable-next-line
   }, []);
 
@@ -34,7 +34,7 @@ function Upcoming(props) {
           colWidth={['3rem', '3rem', '10rem', '11rem', '11rem']}
           headItems={['', 'No.', 'Date', 'Mission', 'Rocket']}
           dataItems={
-            launches?.filter((launch) => launch.upcoming).map((launch) => {
+            launches.filter((launch) => launch.upcoming).map((launch) => {
               return [
                 <Clickable style={{color:"red"}}>
                   <Link className={classes.link} onClick={() => dispatch( thunkAbortLaunch({_id: launch._id}) )}>

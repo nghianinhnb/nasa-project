@@ -10,12 +10,12 @@ import {thunkGetLaunchs} from 'pages/Upcoming/launchSlice';
 function History(props) {
   // MARK: --- Params ---
   const dispatch = useDispatch();
-  const launches = useSelector(state => state.launch.launches);
+  const {launches, pending} = useSelector(state => state.launch);
 
 
   // MARK: --- Hooks ---
   useEffect(() => {
-    if (!launches.length) dispatch( thunkGetLaunchs({}) );
+    if (!launches.length && !pending) dispatch( thunkGetLaunchs({}) );
     // eslint-disable-next-line
   }, []);
 
@@ -31,7 +31,7 @@ function History(props) {
             colWidth={['2rem', '3rem', '9rem', '', '7rem']}
             headItems={['', 'No.', 'Date', 'Mission', 'Rocket', 'Customers']}
             dataItems={
-              launches?.filter((launch) => !launch.upcoming).map((launch) => {
+              launches.filter((launch) => !launch.upcoming).map((launch) => {
                 return [
                   <span style={
                     {color: launch.success ? "greenyellow" : "red"}

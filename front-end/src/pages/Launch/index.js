@@ -14,7 +14,7 @@ function Launch(props) {
 
   // MARK: --- Params ---
   const {sounds} = props;
-  const {planets} = useSelector(state => state.planet);
+  const {planets, pending} = useSelector(state => state.planet);
   const {createPending} = useSelector(state => state.launch);
 
   const selectorBody = useMemo(() => {
@@ -57,7 +57,7 @@ function Launch(props) {
 
   // MARK: --- Hooks ---
   useEffect(() => {
-    if (!planets.length) dispatch( thunkGetAllPlanets({}) );
+    if (!planets.length && pending) dispatch( thunkGetAllPlanets({}) );
     // eslint-disable-next-line
   }, []);
 

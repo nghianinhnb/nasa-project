@@ -33,6 +33,7 @@ const launchSlice = createSlice({
     name: 'launch',
     initialState: {
         createPending: false,
+        pending: false,
         launches: [],
     },
     reducers: {
@@ -53,7 +54,14 @@ const launchSlice = createSlice({
     },
     extraReducers: {
         // Get all Launch
+        [thunkGetLaunchs.pending]: (state, action) => {
+            state.pending = true;
+        },
+        [thunkGetLaunchs.rejected]: (state, action) => {
+            state.pending = false;
+        },
         [thunkGetLaunchs.fulfilled]: (state, action) => {
+            state.pending = false;
             const {result, launches} = action.payload.data;
             if (result==='success' && launches.length) {
                 state.launches = launches;

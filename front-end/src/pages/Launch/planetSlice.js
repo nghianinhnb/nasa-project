@@ -17,10 +17,18 @@ const planetSlice = createSlice({
     name: 'planet',
     initialState: {
         planets: [],
+        pending: false,
     },
     reducers: {},
     extraReducers: {
+        [thunkGetAllPlanets.pending]: (state, action) => {
+            state.pending = true;
+        },
+        [thunkGetAllPlanets.rejected]: (state, action) => {
+            state.pending = false;
+        },
         [thunkGetAllPlanets.fulfilled]: (state, action) => {
+            state.pending = false;
             const {result, planets} = action.payload.data;
             if (result==='success') {
                 state.planets = planets;
