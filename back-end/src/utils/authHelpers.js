@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 
 exports.generateAccessToken = (userId) => {
-    return jwt.sign({ id: userId, exp: Math.floor(Date.now() * 0.001) + 604800 }, process.env.ACCESS_TOKEN_KEY);
+    return jwt.sign({ id: userId, exp: Math.floor(Date.now() * 0.001) + 300 }, process.env.ACCESS_TOKEN_KEY);
 }
 
 
