@@ -24,9 +24,8 @@ axiosClient.interceptors.request.use(async (config) => {
     );
     console.log(`${sTag} - headers: ${JSON.stringify(config.headers.common)}`);
 
-    const accessToken = Global.accessToken;
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    if (Global.accessToken) {
+      config.headers.Authorization = `Bearer ${Global.accessToken}`;
     }
 
     return config;
@@ -44,17 +43,26 @@ axiosClient.interceptors.response.use(
     async (error) => {
       console.log({ error });
 
-      // let errorMessage = null;
-      // const response = error.response;
-      // if (response && response.data) {
-      //   const data = response.data;
-      //   const { result, reason } = data;
-      //   if (result === "failed" && reason) {
-      //     errorMessage = reason;
-      //   }
-      // }
+      // Auto Refresh Token
+      const config = error.config;
+      if (
+        config.url !== "/sign-in" && config.url !== "/refresh-token" &&
+        error.response && error.response.status === 401
+      ) {
+        let res = await axios.post(process.env.REACT_APP_API_URL + '/refresh-token', {refreshToken: Global.refreshToken});
 
-      return error;
+        const {result, accessToken, refreshToken} = res.data;
+        if (result==='success') {
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          Global.accessToken = accessToken;
+          Global.refreshToken = refreshToken;
+          return axiosClient(config);
+        }
+      }
+      //
+
+      return Promise.reject(error)
     }
 );
 
