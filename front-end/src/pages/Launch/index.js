@@ -57,7 +57,7 @@ function Launch(props) {
 
   // MARK: --- Hooks ---
   useEffect(() => {
-    if (!planets.length && pending) dispatch( thunkGetAllPlanets({}) );
+    if (!planets.length && !pending) dispatch( thunkGetAllPlanets({}) );
     // eslint-disable-next-line
   }, []);
 
