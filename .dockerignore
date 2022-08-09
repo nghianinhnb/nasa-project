@@ -1,0 +1,12 @@
+.git
+.github
+.gitignore
+
+*/node_modules
+
+*/__test__
+
+*/log
+*/package-lock.json
+
+*/.env
