@@ -13,7 +13,9 @@
     "test-watch": "npm run be test-watch",
     "watch": "npm run be watch & npm run fe start",
     "predeploy": "npm run fe build",
-    "deploy": "pm2 start src/server.js -i 3 --prefix back-end"
+    "deploy": "pm2 start src/server.js -i 3 --prefix back-end",
+    "build": "cd ./front-end && npm i && npm run build && cd ..",
+    "docker-build": "npm run build && docker build . -t nghianinhnb/nasa-project"
   },
   "author": "",
   "license": "ISC"
