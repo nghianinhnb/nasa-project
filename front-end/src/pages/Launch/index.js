@@ -48,7 +48,6 @@ function Launch(props) {
       }, 600);
     } else {
       setTimeout(() => {
-        console.log('fail')
         dispatch(updateCreatePending(false));
         sounds.warning.play();
       }, 600);
