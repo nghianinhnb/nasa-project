@@ -28,8 +28,9 @@ exports.register = async (req, res) => {
 
     const salt = authHelper.generateSalt(10);
     const hashedPassword = authHelper.hashPassword(password, salt);
+    const refreshToken = authHelper.generateRefreshToken();
 
-    await user.create( {email, name, hashedPassword, salt},
+    await user.create( {email, name, hashedPassword, salt, refreshToken},
         (err, user) => {
             if (err) {
                 res.status(409).json({
@@ -43,6 +44,8 @@ exports.register = async (req, res) => {
             res.status(201).json({
                 result: 'success',
                 detail: {email, name},
+                accessToken: authHelper.generateAccessToken(user.id),
+                refreshToken: refreshToken,
             });
         }
     )
@@ -60,33 +63,32 @@ exports.signIn = async (req, res) => {
         return
     }
 
-    const thisUser = await user.findOne({email}, '-__v',
-        {
-            if (err) {
-                res.status(500).json({
-                    result: 'failed',
-                    err: err,
-                    reason: err_vi.ERROR_INTERNAL,
-                });
-                return
-            }
-        }
-    );
+    try {
+        const thisUser = await user.findOne({email}, '-__v');
 
-    if (!thisUser || thisUser.hashedPassword != authHelper.hashPassword(password, thisUser.salt)) {
-        res.status(404).json({
+        if (!thisUser || thisUser.hashedPassword != authHelper.hashPassword(password, thisUser.salt)) {
+            res.status(404).json({
+                result: 'failed',
+                reason: err_vi.ERROR_WRONG_PASSWORD,
+            });
+            return
+        }
+    
+        res.json({
+            result: 'success',
+            detail: {name: thisUser.name, email: thisUser.email},
+            accessToken: authHelper.generateAccessToken(thisUser.id),
+            refreshToken: authHelper.generateRefreshToken(),
+        })
+        
+    } catch(err) {
+        res.status(500).json({
             result: 'failed',
-            reason: err_vi.ERROR_WRONG_PASSWORD,
-        });
-        return
+            err: 'ERROR_INTERNAL',
+            reason: err_vi.ERROR_INTERNAL,
+        })
     }
 
-    res.json({
-        result: 'success',
-        detail: {name: thisUser.name, email: thisUser.email},
-        accessToken: authHelper.generateAccessToken(thisUser.id),
-        refreshToken: authHelper.generateRefreshToken(),
-    })
 }
 
 
