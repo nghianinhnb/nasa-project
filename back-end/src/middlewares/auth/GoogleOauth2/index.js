@@ -6,10 +6,12 @@ const constants = require('../../../config/constants');
 const authHelper = require('../../../utils/authHelpers');
 
 
+const googleAuthCallbackURL = `${process.env.HOST_NAME ? process.env.HOST_NAME + ':' + process.env.PORT : ''} ${constants.PATH_GOOGLE_AUTH_CALLBACK}`;
+
 exports.strategy = new Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: constants.PATH_GOOGLE_AUTH_CALLBACK,
+    callbackURL: googleAuthCallbackURL,
   },
   async function(accessToken, refreshToken, profile, callback) {
     const {name, emails} = profile
