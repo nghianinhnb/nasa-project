@@ -1,11 +1,17 @@
 require('dotenv').config();
+const fs = require('fs');
+const https = require('https');
 const mongoose = require('mongoose');
 const {loadPlanetsCsv} = require('./services/loadPlanet');
 
-const app = require('./app')
-
 
 const PORT = process.env.PORT || 8000;
+
+
+const app = https.createServer({
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+}, require('./app'));
 
 
 // MARK: --- Start Server ---
@@ -19,7 +25,7 @@ const PORT = process.env.PORT || 8000;
 
     await mongoose.connect(process.env.MONGO_URL);
 
-    await loadPlanetsCsv();
+    // await loadPlanetsCsv();
 
     app.listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`);
