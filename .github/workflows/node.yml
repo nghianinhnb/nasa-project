@@ -9,10 +9,6 @@ jobs:
     env:
       CI: true
       MONGO_URL: mongodb://localhost/nasa
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      ACCESS_TOKEN_KEY: '111111'
-      REFRESH_TOKEN_KEY: '111111111'
     strategy:
       matrix:
         node-version: ['16']
@@ -29,7 +25,7 @@ jobs:
       - run: npm install
       - run: npm run fe build
       - env:
-          GOOGLE_CLIENT_ID: 1042641203393-okjglgq1vrnfk9u1k05v2m1af1b2ui7o.apps.googleusercontent.com
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           ACCESS_TOKEN_KEY: '111111'
           REFRESH_TOKEN_KEY: '111111111'
