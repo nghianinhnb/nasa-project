@@ -6,7 +6,9 @@ on:
     branches: [ main ]
 jobs:
   build:
-    environment: docker_env, google_env
+    environment: 
+      docker_env
+      google_env
     env:
       CI: true
       MONGO_URL: mongodb://localhost/nasa
@@ -51,7 +53,10 @@ jobs:
   deploy:
     needs: build
     name: Deploy to EC2
-    environment: docker_env, google_env, aws_env
+    environment: 
+      docker_env
+      google_env
+      aws_env
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
