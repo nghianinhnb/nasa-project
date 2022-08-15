@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const {user} = require('../../../models');
 const err_vi = require('../../../config/err.vi');
 const authHelper = require('../../../utils/authHelpers');
