@@ -24,8 +24,6 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       - run: npm install
       - run: npm run fe build
-      - run: echo ${{ secrets.GOOGLE_CLIENT_ID }}
-      - run: echo "${{ secrets.GOOGLE_CLIENT_ID }}"
       - env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
@@ -67,11 +65,11 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/nasa-project
             docker rm -fv nasa-server
             docker run -d \
-              -e MONGO_URL=${{ secrets.MONGO_URL }} \
-              -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
+              -e MONGO_URL="${{ secrets.MONGO_URL }}" \
+              -e GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" \
               -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} \
               -e REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} \
-              -e HOST_NAME=${{ secrets.AWS_DNS_NAME }} \
+              -e HOST_NAME="${{ secrets.AWS_DNS_NAME }}" \
               -p 8000:8000 -name nasa-server ${{ secrets.DOCKER_USERNAME }}/nasa-project
             docker image prune -a -f
       
