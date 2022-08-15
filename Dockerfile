@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ./back-end .
 
-COPY ./tmp-build ./src/build
+COPY ./tmp ./src/build
 
 RUN chown -R node ./
 

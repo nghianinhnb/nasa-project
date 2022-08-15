@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "set BUILD_PATH=../back-end/src/build&& react-scripts build",
-    "tmp-build": "set BUILD_PATH=../tmp-build&& react-scripts build",
+    "tmp-build": "set BUILD_PATH=../tmp&& react-scripts build",
     "test": "jest --passWithNoTests",
     "eject": "react-scripts eject"
   },

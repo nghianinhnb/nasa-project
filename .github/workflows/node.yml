@@ -43,7 +43,6 @@ jobs:
     environment: global_env
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Restart Server
         uses: appleboy/ssh-action@master
         with:
