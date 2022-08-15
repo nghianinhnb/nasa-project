@@ -45,6 +45,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/nasa-project
         
@@ -71,6 +72,6 @@ jobs:
               -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} \
               -e REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} \
               -e HOST_NAME="${{ secrets.AWS_DNS_NAME }}" \
-              -p 8000:8000 -name nasa-server ${{ secrets.DOCKER_USERNAME }}/nasa-project
+              -p 8000:8000 --name nasa-server ${{ secrets.DOCKER_USERNAME }}/nasa-project
             docker image prune -a -f
       
