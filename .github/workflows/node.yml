@@ -16,6 +16,7 @@ jobs:
         mongodb-version: ['5.0']
     runs-on: ubuntu-latest
     steps:
+      # Setup env
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -23,16 +24,7 @@ jobs:
       - uses: supercharge/mongodb-github-action@1.7.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-      - run: npm install
-      - run: npm run fe build
-      - env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          ACCESS_TOKEN_KEY: '111111'
-          REFRESH_TOKEN_KEY: '111111111'
-        run: npm test
-
-      # build docker image and push to docker hub
+      # Setup docker
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -42,9 +34,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWD }}
-      - name: Build and push
-        run: sudo docker build . -t ${{ secrets.DOCKER_USERNAME }}/nasa-project && \
-             sudo docker push ${{ secrets.DOCKER_USERNAME }}/nasa-project
+      # Build front-end and Test
+      - run: npm install
+      - run: npm run fe build
+      - env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          ACCESS_TOKEN_KEY: '111111'
+          REFRESH_TOKEN_KEY: '111111111'
+        run: npm test
+      # Build docker image
+      - run: sudo docker build . -t ${{ secrets.DOCKER_USERNAME }}/nasa-project
+      # Push to DockerHub
+      - run: sudo docker push ${{ secrets.DOCKER_USERNAME }}/nasa-project
       
   deploy:
     needs: build
