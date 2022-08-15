@@ -24,6 +24,8 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       - run: npm install
       - run: npm run fe build
+      - run: echo ${{ secrets.GOOGLE_CLIENT_ID }}
+      - run: echo "${{ secrets.GOOGLE_CLIENT_ID }}"
       - env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
