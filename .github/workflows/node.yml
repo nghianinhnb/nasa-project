@@ -24,7 +24,6 @@ jobs:
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
       - run: npm install
-      - run: npm run fe build
       - env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
@@ -34,7 +33,9 @@ jobs:
 
       # build docker image and push to docker hub
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p${{ secrets.DOCKER_PASSWD }}  
-      - run: docker build ./back-end -f ./Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/nasa-project
+      - run: rm -f .gitignore
+      - run: npm run build --prefix front-end
+      - run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/nasa-project
       - run: docker push ${{ secrets.DOCKER_USERNAME }}/nasa-project
         
   deploy:
@@ -53,7 +54,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/nasa-project
-            docker rm -fv nasa-server
+            docker rm -f nasa-server
             docker run -d \
               -e MONGO_URL="${{ secrets.MONGO_URL }}" \
               -e GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" \
