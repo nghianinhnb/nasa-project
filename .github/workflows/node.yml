@@ -9,8 +9,8 @@ jobs:
     env:
       CI: true
       MONGO_URL: mongodb://localhost/nasa
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_CLIENT_ID: "${{ secrets.GOOGLE_CLIENT_ID }}"
+      GOOGLE_CLIENT_SECRET: "${{ secrets.GOOGLE_CLIENT_SECRET }}"
       ACCESS_TOKEN_KEY: '111111'
       REFRESH_TOKEN_KEY: '111111111'
     strategy:
@@ -56,19 +56,19 @@ jobs:
       - name: Restart Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.AWS_DNS_NAME }}
-          username: ${{ secrets.AWS_USER }}
+          host: "${{ secrets.AWS_DNS_NAME }}"
+          username: "${{ secrets.AWS_USER }}"
           key: ${{ secrets.AWS_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/nasa-project
             docker rm -fv nasa-server
             docker run -d \
-              -e MONGO_URL=${{ secrets.MONGO_URL }} \
-              -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
-              -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} \
-              -e REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} \
-              -e HOST_NAME=${{ secrets.AWS_DNS_NAME }} \
+              -e MONGO_URL="${{ secrets.MONGO_URL }}" \
+              -e GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" \
+              -e ACCESS_TOKEN_KEY="${{ secrets.ACCESS_TOKEN_KEY }}" \
+              -e REFRESH_TOKEN_KEY="${{ secrets.REFRESH_TOKEN_KEY }}" \
+              -e HOST_NAME="${{ secrets.AWS_DNS_NAME }}" \
               -p 8000:8000 -name nasa-server ${{ secrets.DOCKER_USERNAME }}/nasa-project
             docker image prune -a -f
       
