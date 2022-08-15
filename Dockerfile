@@ -2,7 +2,7 @@ FROM node:16-alpine3.16
 
 WORKDIR /app
 
-COPY ./back-end .
+COPY . .
 
 RUN chown -R node ./
 
