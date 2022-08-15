@@ -9,6 +9,7 @@ jobs:
     env:
       CI: true
       MONGO_URL: mongodb://localhost/nasa
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       ACCESS_TOKEN_KEY: '111111'
       REFRESH_TOKEN_KEY: '111111111'
