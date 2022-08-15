@@ -49,7 +49,7 @@ axiosClient.interceptors.response.use(
         config.url !== "/sign-in" && config.url !== "/refresh-token" &&
         error.response && error.response.status === 401
       ) {
-        let res = await axios.post((process.env.REACT_APP_API_URL || '') + '/refresh-token', {refreshToken: Global.refreshToken});
+        let res = await axios.post((process.env.REACT_APP_API_URL || 'api/v1') + '/refresh-token', {refreshToken: Global.refreshToken});
 
         const {result, accessToken, refreshToken} = res.data;
         if (result==='success') {
