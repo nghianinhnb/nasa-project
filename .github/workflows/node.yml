@@ -27,23 +27,23 @@ jobs:
       - env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          ACCESS_TOKEN_KEY: '111111'
-          REFRESH_TOKEN_KEY: '111111111'
+          ACCESS_TOKEN_KEY: ACCESS_TOKEN_KEY
+          REFRESH_TOKEN_KEY: REFRESH_TOKEN_KEY
         run: npm test
 
       # build docker image and push to docker hub
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p${{ secrets.DOCKER_PASSWD }}  
       - run: npm run ubuntu-build --prefix front-end
-      - run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/nasa-project
-      - run: docker push ${{ secrets.DOCKER_USERNAME }}/nasa-project
-        
+      - run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+      - run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+
   deploy:
     needs: build
     name: Deploy to EC2
     environment: global_env
     runs-on: ubuntu-latest
     steps:
-      - name: Restart Server
+      - name: Deploy on AWS EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_DNS_NAME }}
@@ -51,14 +51,13 @@ jobs:
           key: ${{ secrets.AWS_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/nasa-project
-            docker rm -f nasa-server
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            docker rm -f {{ secrets.CONTAINER_NAME }}
             docker run -d \
               -e MONGO_URL="${{ secrets.MONGO_URL }}" \
               -e GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_CLIENT_SECRET }}" \
               -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} \
               -e REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} \
               -e HOST_NAME="${{ secrets.AWS_DNS_NAME }}" \
-              -p 8000:8000 --name nasa-server ${{ secrets.DOCKER_USERNAME }}/nasa-project
+              -p 443:8000 --name {{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
             docker image prune -a -f
-      
