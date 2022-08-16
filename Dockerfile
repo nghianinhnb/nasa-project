@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY ./back-end .
 
-COPY ./tmp ./src/build
-
 RUN chown -R node ./
 
 USER node
